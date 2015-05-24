@@ -97,6 +97,7 @@ jsmpeg.prototype.decodeSocketHeader = function( data ) {
 jsmpeg.prototype.receiveSocketMessage = function( event ) {
 	var messageData = new Uint8Array(event.data);
 
+    	console.log('into receiveSocketMessage');
 	if( !this.sequenceStarted ) {
 		this.decodeSocketHeader(messageData);
 	}
@@ -607,6 +608,7 @@ jsmpeg.prototype.decodePicture = function(skipOutput) {
 	this.pictureCodingType = this.buffer.getBits(3);
 	this.buffer.advance(16); // skip vbv_delay
 	
+    	console.log('into decodePicture');
 	// Skip B and D frames or unknown coding type
 	if( this.pictureCodingType <= 0 || this.pictureCodingType >= PICTURE_TYPE_B ) {
 		return;
@@ -870,6 +872,7 @@ jsmpeg.prototype.sliceBegin = false;
 jsmpeg.prototype.decodeSlice = function(slice) {	
 	this.sliceBegin = true;
 	this.macroblockAddress = (slice - 1) * this.mbWidth - 1;
+    	console.log('into decodeSlice');
 	
 	// Reset motion vectors and DC predictors
 	this.motionFwH = this.motionFwHPrev = 0;

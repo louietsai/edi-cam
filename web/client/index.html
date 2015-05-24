@@ -41,8 +41,22 @@
     ctx.fillText('Loading...', canvas.width/2-30, canvas.height/3);
 
     // Start the player
+    console.log('before websocket',wsUrl);
     var client = new WebSocket(wsUrl);
-    var player = new jsmpeg(client, { canvas:canvas });
+	// An 'onload' callback can be specified in the 'options' argument
+    var mpegLoaded = function( player ) {
+        console.log('Loaded', player);
+
+        // calculateFrameCount() and calculateDuration() can only be called
+        // after the mpeg has been fully loaded. So this callback is the ideal
+        // place to fetch this info
+       	var frames = player.calculateFrameCount(),
+        	duration = player.calculateDuration();
+
+    	console.log('Duration: '+duration+' seconds ('+frames+' frames)');
+    };
+    console.log('before jsmpeg');
+    var player = new jsmpeg(client, { canvas:canvas }, {onload:mpegLoaded});
   </script>
 </body>
 </html>
